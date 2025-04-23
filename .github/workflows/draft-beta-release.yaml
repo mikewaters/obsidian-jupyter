@@ -2,7 +2,7 @@
 # Custom GitHub Action to draft a pre-release
 #
 # A GitHub draft pre-release is automatically created when the plugin's
-# `manifest-beta.json` is updated on the `release` branch.
+# `manifest.json` is updated on the `release` branch.
 #
 # Based on :
 #   - [Obsidian developers docs](https://docs.obsidian.md/Plugins/Releasing/Release+your+plugin+with+GitHub+Actions)
@@ -15,12 +15,12 @@ on:
     # The workflow can be run manually
     workflow_dispatch:
     # The workflow is also triggered automatically when a push
-    # happens where the plugin's `manifest-beta.json` is modified
+    # happens where the plugin's `manifest.json` is modified
     push:
         branches:
             - release
         paths:
-            - 'manifest-beta.json'
+            - 'manifest.json'
 
 permissions:
   contents: write
@@ -49,7 +49,7 @@ jobs:
       - name: Extract tag from manifest
         # Extract the tag to use from the beta manifest file
         run: |
-          tag=$(jq -r '.version' manifest-beta.json)
+          tag=$(jq -r '.version' manifest.json)
           echo "Extracted tag: $tag"
           echo "TAG=$tag" >> $GITHUB_ENV
 
@@ -97,4 +97,4 @@ jobs:
             --prerelease \
             --notes "$NOTES" \
             --generate-notes \
-            main.js manifest-beta.json styles.css
+            main.js manifest.json styles.css
